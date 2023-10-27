@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+  </head>
+  <body>
+    <h1>Quick Check</h1>
+    <p>Enter your name to check if you are on the list</p>
+    <input type="text" id="inputName" />
+    <button id="post">Am I on the List?</button>
+    <div id="result"></div>
+
+    <script>
+      const postBtn = document.getElementById("post");
+      const inputName = document.getElementById("inputName");
+      const result = document.getElementById("result"); //this is where the result will be displayed
+
+      const baseURL = "http://localhost:1225";
+
+      postBtn.addEventListener("click", () => {
+        postInfo();
+      });
+
+      //post the name entered to the server
+      async function postInfo() {
+        const name = inputName.value;
+        const response = await fetch(`${baseURL}/gift`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name }),
+        });
+        const data = await response.json();
+
+        //display the result
+        result.textContent = JSON.stringify(data, null, 2);
+
+        console.log("response back", data);
+      }
+    </script>
+  </body>
+</html>
